@@ -1,43 +1,46 @@
 import streamlit as st
 from datetime import datetime
 
-st.title("Simple Chatbot")
+# Title
+st.title("Friendly Assistant")
+st.write("Hello! I am a simple chatbot. Ask me something.")
 
-msg = st.text_input("You :")
+# User input
+msg = st.text_input("Type your message")
 
 if msg:
     msg = msg.lower()
 
     if msg == "hi" or msg == "hello":
-        st.write("Bot : Hello")
+        st.success("Hello! Nice to meet you.")
 
     elif msg == "how are you":
-        st.write("Bot : I am fine. How are you?")
+        st.success("I am doing good. Hope you are also doing well.")
 
     elif msg == "your name":
-        st.write("Bot : My name is SmartBot")
+        st.success("My name is Friendly Assistant.")
 
     elif msg == "time":
         now = datetime.now()
-        t = now.strftime("%H:%M")
-        st.write("Bot : Current time is " + t)
+        current_time = now.strftime("%H:%M")
+        st.success("Current time is " + current_time)
 
     elif msg == "date":
         now = datetime.now()
-        d = now.strftime("%d-%m-%Y")
-        st.write("Bot : Today's date is " + d)
+        current_date = now.strftime("%d-%m-%Y")
+        st.success("Today's date is " + current_date)
 
     elif msg == "internship":
-        st.write("Bot : Internship helps to learn practical skills")
+        st.success("Internship helps students gain practical experience.")
 
     elif msg == "college":
-        st.write("Bot : College life is important for learning and growth")
+        st.success("College life teaches learning and responsibility.")
 
     elif msg == "python":
-        st.write("Bot : Python is easy and useful for AI projects")
+        st.success("Python is simple and useful for many projects.")
 
     elif msg == "bye":
-        st.write("Bot : Bye. Have a good day")
+        st.success("Bye! Have a nice day.")
 
     else:
-        st.write("Bot : Sorry, I don't know that")
+        st.warning("Sorry, I do not understand that question.")

@@ -1,43 +1,43 @@
+import streamlit as st
 from datetime import datetime
 
-print("Simple Chatbot")
-print("Type quit to close")
+st.title("Simple Chatbot")
 
-while True:
+msg = st.text_input("You :")
 
-    msg = input("You : ").lower()
+if msg:
+    msg = msg.lower()
 
     if msg == "hi" or msg == "hello":
-        print("Bot : Hello")
+        st.write("Bot : Hello")
 
     elif msg == "how are you":
-        print("Bot : I am fine. How are you?")
+        st.write("Bot : I am fine. How are you?")
 
     elif msg == "your name":
-        print("Bot : My name is SmartBot")
+        st.write("Bot : My name is SmartBot")
 
     elif msg == "time":
         now = datetime.now()
         t = now.strftime("%H:%M")
-        print("Bot : Current time is", t)
+        st.write("Bot : Current time is " + t)
 
     elif msg == "date":
         now = datetime.now()
         d = now.strftime("%d-%m-%Y")
-        print("Bot : Today's date is", d)
+        st.write("Bot : Today's date is " + d)
 
     elif msg == "internship":
-        print("Bot : Internship helps to learn practical skills")
+        st.write("Bot : Internship helps to learn practical skills")
 
     elif msg == "college":
-        print("Bot : College life is important for learning and growth")
+        st.write("Bot : College life is important for learning and growth")
 
     elif msg == "python":
-        print("Bot : Python is easy and useful for AI projects")
+        st.write("Bot : Python is easy and useful for AI projects")
 
     elif msg == "bye":
-        print("Bot : Bye. Have a good day")
-        break
+        st.write("Bot : Bye. Have a good day")
 
     else:
-        print("Bot : Sorry, I don't know that")
+        st.write("Bot : Sorry, I don't know that")

@@ -1,43 +1,46 @@
 import streamlit as st
-import time
+from datetime import datetime
 
-print("💖 Welcome to the Love Program 💖")
-print("-" * 40)
+# Title
+st.title("Friendly Assistant")
+st.write("Hello! I am a simple chatbot. Ask me something.")
 
-name = input("✨ Say your name: ").strip().lower()
+# User input
+msg = st.text_input("Type your message")
 
-if name == "keerthi" or name == "keerthivarshini":
-    print("\n💗 Checking heart connection... 💗")
-    time.sleep(2)
+if msg:
+    msg = msg.lower()
 
-    lines = [
-        "🌸 Hey Keerthi... 💕",
-        "🫂 You are my fav and when I'm with you I feel happy 💗",
-        "😚 I love you so much dii chlo 🫂💗😚",
-        "✨ Your smile makes my day brighter ☀️💖",
-        "🌍 Among everyone, you are special to me 💕",
-        "💞 Talking with you feels like peace and happiness 🥹",
-        "🌹 Every moment with you becomes a beautiful memory 💫",
-        "💓 You are the reason for many of my smiles 😍",
-        "🦋 No matter what happens, you will always be precious 💗",
-        "❤️ Thank you for being you, Keerthi 🌸"
-    ]
+    if msg == "hi" or msg == "hello":
+        st.success("Hello! Nice to meet you.")
 
-    for line in lines:
-        print(line)
-        time.sleep(2)
+    elif msg == "how are you":
+        st.success("I am doing good. Hope you are also doing well.")
 
-    print("\n🎀 Love Meter Loading... 🎀")
-    time.sleep(2)
-    print("💯 Love Level: Infinite ♾️💖")
+    elif msg == "your name":
+        st.success("My name is Friendly Assistant.")
 
-    print("""
-          💗💗💗💗💗
-        💗           💗
-       💗   KEERTHI   💗
-        💗           💗
-          💗💗💗💗💗
-    """)
+    elif msg == "time":
+        now = datetime.now()
+        current_time = now.strftime("%H:%M")
+        st.success("Current time is " + current_time)
 
-else:
-    print("\n😅 Oops! This love code is only for Keerthi / Keerthivarshini 💔")
+    elif msg == "date":
+        now = datetime.now()
+        current_date = now.strftime("%d-%m-%Y")
+        st.success("Today's date is " + current_date)
+
+    elif msg == "internship":
+        st.success("Internship helps students gain practical experience.")
+
+    elif msg == "college":
+        st.success("College life teaches learning and responsibility.")
+
+    elif msg == "python":
+        st.success("Python is simple and useful for many projects.")
+
+    elif msg == "bye":
+        st.success("Bye! Have a nice day.")
+
+    else:
+        st.warning("Sorry, I do not understand that question.")

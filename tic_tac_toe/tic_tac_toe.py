@@ -1,21 +1,23 @@
 import streamlit as st
 import random
 
+st.set_page_config(page_title="Tic Tac Toe", page_icon="🎮")
+
+# title
+st.title("🎮 Tic Tac Toe Game")
+st.write("Play against Computer")
+
 # create board
 if "board" not in st.session_state:
-    st.session_state.board = [" "] * 9
+    st.session_state.board = [""] * 9
+
+if "message" not in st.session_state:
+    st.session_state.message = ""
 
 board = st.session_state.board
 
-st.title("Tic Tac Toe")
-st.write("You are X and Computer is O")
-
-# show board
-for i in range(0, 9, 3):
-    st.write(board[i] + " | " + board[i+1] + " | " + board[i+2])
-
 # winner check
-def check(mark):
+def check_winner(player):
     win = [
         [0,1,2],[3,4,5],[6,7,8],
         [0,3,6],[1,4,7],[2,5,8],
@@ -23,38 +25,63 @@ def check(mark):
     ]
 
     for x in win:
-        if board[x[0]] == mark and board[x[1]] == mark and board[x[2]] == mark:
+        if board[x[0]] == player and board[x[1]] == player and board[x[2]] == player:
             return True
     return False
 
-# user input
-pos = st.number_input("Enter position (1-9)", 1, 9)
+# computer move
+def computer_move():
+    empty = []
+    for i in range(9):
+        if board[i] == "":
+            empty.append(i)
 
-if st.button("Play"):
+    if empty:
+        move = random.choice(empty)
+        board[move] = "O"
 
-    pos = pos - 1
+# click button
+def play(pos):
 
-    if board[pos] == " ":
+    if board[pos] == "":
+
         board[pos] = "X"
 
-        if check("X"):
-            st.success("You Won!")
+        if check_winner("X"):
+            st.session_state.message = "🎉 You Won!"
+            return
 
-        else:
-            empty = []
+        computer_move()
 
-            for i in range(9):
-                if board[i] == " ":
-                    empty.append(i)
+        if check_winner("O"):
+            st.session_state.message = "😢 Computer Won!"
+            return
 
-            if empty:
-                comp = random.choice(empty)
-                board[comp] = "O"
+        if "" not in board:
+            st.session_state.message = "🤝 Match Draw"
 
-                if check("O"):
-                    st.error("Computer Won!")
+# board UI
+for row in range(3):
+    cols = st.columns(3)
 
-    else:
-        st.warning("Position already filled")
+    for col in range(3):
+        index = row * 3 + col
 
+        with cols[col]:
+            st.button(
+                board[index] if board[index] else " ",
+                key=index,
+                on_click=play,
+                args=(index,),
+                use_container_width=True
+            )
+
+# message
+if st.session_state.message:
+    st.success(st.session_state.message)
+
+# restart button
+if st.button("🔄 Restart Game"):
+    st.session_state.board = [""] * 9
+    st.session_state.message = ""
     st.rerun()

@@ -49,13 +49,13 @@ if msg:
     elif msg == "who created you":
         st.success("I am a simple chatbot created using Python and Streamlit.")
 
-    elif msg == "good morning":
+    elif msg == "goodmorning":
         st.success("Good morning! Have a productive day.")
 
-    elif msg == "good night":
+    elif msg == "goodnight":
         st.success("Good night! Take care and sleep well.")
 
-    elif msg == "thank you":
+    elif msg == "thankyou":
         st.success("You are welcome. Happy to help you.")
 
     elif msg == "bye":

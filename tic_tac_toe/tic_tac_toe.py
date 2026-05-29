@@ -3,7 +3,7 @@ import random
 
 st.set_page_config(page_title="Tic Tac Toe", page_icon="🎮", layout="centered")
 
-# CSS Design
+# CSS
 st.markdown("""
 <style>
 
@@ -23,6 +23,7 @@ h1 {
     margin-bottom:20px;
 }
 
+/* Game buttons */
 div.stButton > button {
     height:90px;
     width:100%;
@@ -31,22 +32,38 @@ div.stButton > button {
     border-radius:15px;
     border:none;
     background-color:white;
-    color:#222222 !important;
-    box-shadow:2px 2px 8px rgba(0,0,0,0.3);
+    color:#222 !important;
+    box-shadow:2px 2px 10px rgba(0,0,0,0.3);
 }
 
 div.stButton > button:hover {
-    background-color:#dfe6ff;
-    color:black !important;
+    background:#dfe6ff;
 }
 
-.restart button {
-    background-color:#ff4b4b !important;
-    color:white !important;
-    border-radius:10px;
-    height:45px;
-    font-size:18px;
+/* Highlight message */
+.msg {
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    padding:15px;
+    border-radius:12px;
+    margin-top:25px;
+    margin-bottom:15px;
+    color:white;
 }
+
+.win {
+    background:#28a745;
+}
+
+.lose {
+    background:#dc3545;
+}
+
+.draw {
+    background:#ff9800;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -60,9 +77,12 @@ if "board" not in st.session_state:
 if "msg" not in st.session_state:
     st.session_state.msg = ""
 
+if "type" not in st.session_state:
+    st.session_state.type = ""
+
 board = st.session_state.board
 
-# check winner
+# winner check
 def winner(player):
     wins = [
         [0,1,2],[3,4,5],[6,7,8],
@@ -87,7 +107,7 @@ def computer_move():
         move = random.choice(empty)
         board[move] = "O"
 
-# play
+# play move
 def play(pos):
 
     if board[pos] == "" and st.session_state.msg == "":
@@ -95,28 +115,32 @@ def play(pos):
         board[pos] = "X"
 
         if winner("X"):
-            st.session_state.msg = "🎉 You Won!"
+            st.session_state.msg = "🎉 YOU WON!"
+            st.session_state.type = "win"
             return
 
         if "" not in board:
-            st.session_state.msg = "🤝 Match Draw"
+            st.session_state.msg = "🤝 MATCH DRAW!"
+            st.session_state.type = "draw"
             return
 
         computer_move()
 
         if winner("O"):
-            st.session_state.msg = "😢 Computer Won!"
+            st.session_state.msg = "😢 COMPUTER WON!"
+            st.session_state.type = "lose"
             return
 
         if "" not in board:
-            st.session_state.msg = "🤝 Match Draw"
+            st.session_state.msg = "🤝 MATCH DRAW!"
+            st.session_state.type = "draw"
 
-# game board
+# board UI
 for r in range(3):
     cols = st.columns(3)
 
     for c in range(3):
-        idx = r*3 + c
+        idx = r * 3 + c
 
         with cols[c]:
             st.button(
@@ -127,12 +151,16 @@ for r in range(3):
                 use_container_width=True
             )
 
-# message
+# highlighted message
 if st.session_state.msg:
-    st.success(st.session_state.msg)
+    st.markdown(
+        f'<div class="msg {st.session_state.type}">{st.session_state.msg}</div>',
+        unsafe_allow_html=True
+    )
 
 # restart
 if st.button("🔄 Restart Game"):
     st.session_state.board = [""] * 9
     st.session_state.msg = ""
+    st.session_state.type = ""
     st.rerun()

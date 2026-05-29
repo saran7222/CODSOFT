@@ -3,44 +3,57 @@ import random
 
 st.set_page_config(page_title="Tic Tac Toe", page_icon="🎮", layout="centered")
 
-# Background and button styling
+# CSS Design
 st.markdown("""
 <style>
+
 .stApp {
-    background: linear-gradient(to right, #667eea, #764ba2);
+    background: linear-gradient(135deg,#4e54c8,#8f94fb);
 }
 
 h1 {
-    color: white;
-    text-align: center;
+    text-align:center;
+    color:white;
 }
 
-p {
-    color: white;
-    text-align: center;
-    font-size:18px;
+.sub {
+    text-align:center;
+    color:white;
+    font-size:22px;
+    margin-bottom:20px;
 }
 
 div.stButton > button {
-    height: 90px;
-    font-size: 30px;
-    border-radius: 15px;
-    border: none;
-    background-color: white;
-    color: #333;
-    font-weight: bold;
+    height:90px;
+    width:100%;
+    font-size:35px;
+    font-weight:bold;
+    border-radius:15px;
+    border:none;
+    background-color:white;
+    color:#222222 !important;
+    box-shadow:2px 2px 8px rgba(0,0,0,0.3);
 }
 
 div.stButton > button:hover {
-    background-color: #ddd;
+    background-color:#dfe6ff;
+    color:black !important;
+}
+
+.restart button {
+    background-color:#ff4b4b !important;
+    color:white !important;
+    border-radius:10px;
+    height:45px;
+    font-size:18px;
 }
 </style>
 """, unsafe_allow_html=True)
 
 st.title("🎮 Tic Tac Toe")
-st.write("### Play Against Computer 🤖")
+st.markdown('<p class="sub">Play Against Computer 🤖</p>', unsafe_allow_html=True)
 
-# create board
+# board
 if "board" not in st.session_state:
     st.session_state.board = [""] * 9
 
@@ -49,8 +62,8 @@ if "msg" not in st.session_state:
 
 board = st.session_state.board
 
-# winner check
-def check(player):
+# check winner
+def winner(player):
     wins = [
         [0,1,2],[3,4,5],[6,7,8],
         [0,3,6],[1,4,7],[2,5,8],
@@ -63,7 +76,7 @@ def check(player):
     return False
 
 # computer move
-def computer():
+def computer_move():
     empty = []
 
     for i in range(9):
@@ -74,37 +87,43 @@ def computer():
         move = random.choice(empty)
         board[move] = "O"
 
-# play move
+# play
 def play(pos):
 
-    if board[pos] == "":
+    if board[pos] == "" and st.session_state.msg == "":
+
         board[pos] = "X"
 
-        if check("X"):
+        if winner("X"):
             st.session_state.msg = "🎉 You Won!"
             return
 
-        computer()
+        if "" not in board:
+            st.session_state.msg = "🤝 Match Draw"
+            return
 
-        if check("O"):
+        computer_move()
+
+        if winner("O"):
             st.session_state.msg = "😢 Computer Won!"
             return
 
         if "" not in board:
             st.session_state.msg = "🤝 Match Draw"
 
-# board
+# game board
 for r in range(3):
     cols = st.columns(3)
 
     for c in range(3):
-        index = r * 3 + c
+        idx = r*3 + c
+
         with cols[c]:
             st.button(
-                board[index] if board[index] else " ",
-                key=index,
+                board[idx] if board[idx] else " ",
+                key=idx,
                 on_click=play,
-                args=(index,),
+                args=(idx,),
                 use_container_width=True
             )
 
